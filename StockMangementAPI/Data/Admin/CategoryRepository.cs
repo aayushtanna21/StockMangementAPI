@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class CategoryRepository
     {
@@ -13,16 +13,17 @@ namespace StockMangementAPI.Data
             _connectionstring = configuration.GetConnectionString("StockMangmentDB");
         }
         #region SelectAll
-        public IEnumerable<CategoryModel> SelectAll() { 
-            var category=new List<CategoryModel>();
+        public IEnumerable<CategoryModel> SelectAll()
+        {
+            var category = new List<CategoryModel>();
             using (SqlConnection conn = new SqlConnection(_connectionstring))
-            {   
-                SqlCommand cmd=new SqlCommand("PR_Category_SelectAll",conn);
+            {
+                SqlCommand cmd = new SqlCommand("PR_Category_SelectAll", conn);
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                 };
                 conn.Open();
-                SqlDataReader reader=cmd.ExecuteReader();
+                SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     category.Add(new CategoryModel

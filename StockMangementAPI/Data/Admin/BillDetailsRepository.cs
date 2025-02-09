@@ -2,7 +2,7 @@
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class BillDetailsRepository
     {
@@ -43,33 +43,33 @@ namespace StockMangementAPI.Data
             }
             return billDetails;
         }
-		#endregion
-		#region BillsDropDown
-		public List<BillsDropDownModel> BillsDropDown()
-		{
-			var bills = new List<BillsDropDownModel>();
-			using (SqlConnection conn = new SqlConnection(_connectionstring))
-			{
-				SqlCommand cmd = new SqlCommand("PR_Bill_DropDown", conn);
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
-				}
-				conn.Open();
-				SqlDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
-				{
-					bills.Add(new BillsDropDownModel
-					{
-						BillID = Convert.ToInt32(reader["BillID"]),
+        #endregion
+        #region BillsDropDown
+        public List<BillsDropDownModel> BillsDropDown()
+        {
+            var bills = new List<BillsDropDownModel>();
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
+                SqlCommand cmd = new SqlCommand("PR_Bill_DropDown", conn);
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                }
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    bills.Add(new BillsDropDownModel
+                    {
+                        BillID = Convert.ToInt32(reader["BillID"]),
                         BillInfo = reader["BillInfo"].ToString()
-					});
-				}
-			}
-			return bills;
-		}
-		#endregion
-		#region ProductDropDown
-		public List<ProductDropDownModel> ProductDropDown()
+                    });
+                }
+            }
+            return bills;
+        }
+        #endregion
+        #region ProductDropDown
+        public List<ProductDropDownModel> ProductDropDown()
         {
             var products = new List<ProductDropDownModel>();
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -90,11 +90,11 @@ namespace StockMangementAPI.Data
                 }
                 return products;
             }
-           
+
         }
-		#endregion
-		#region SelectByID
-		public BillDetailsModel SelectByID(int billDetailsID)
+        #endregion
+        #region SelectByID
+        public BillDetailsModel SelectByID(int billDetailsID)
         {
             BillDetailsModel billDetails = null;
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -114,8 +114,8 @@ namespace StockMangementAPI.Data
                         BillID = Convert.ToInt32(reader["BillID"]),
                         BillDate = Convert.ToDateTime(reader["BillDate"]),
                         ProductID = Convert.ToInt32(reader["ProductID"]),
-						ProductName = reader["ProductName"].ToString(),
-						Quantity = Convert.ToInt32(reader["Quantity"]),
+                        ProductName = reader["ProductName"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"]),
                         UnitPrice = Convert.ToDecimal(reader["UnitPrice"]),
                         SubTotal = Convert.ToDecimal(reader["SubTotal"]),
                         Created = Convert.ToDateTime(reader["Created"]),

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
+using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -14,16 +14,16 @@ namespace StockMangementAPI.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-		#region Category GetAll
-		[HttpGet]
+        #region Category GetAll
+        [HttpGet]
         public IActionResult GetAll()
         {
             var category = _categoryRepository.SelectAll();
             return Ok(category);
         }
-		#endregion
-		#region Category GetByID
-		[HttpGet("{ID}")]
+        #endregion
+        #region Category GetByID
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var category = _categoryRepository.SelectByID(ID);
@@ -33,9 +33,9 @@ namespace StockMangementAPI.Controllers
             }
             return Ok(category);
         }
-		#endregion
-		#region Category Delete
-		[HttpDelete("{ID}")]
+        #endregion
+        #region Category Delete
+        [HttpDelete("{ID}")]
         public IActionResult Delete(int ID)
         {
             var isDeleted = _categoryRepository.Delete(ID);
@@ -45,9 +45,9 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-		#region Category GetInsert
-		[HttpPost]
+        #endregion
+        #region Category GetInsert
+        [HttpPost]
         public IActionResult Insert([FromBody] CategoryModel categoryModel)
         {
             if (categoryModel == null)
@@ -61,9 +61,9 @@ namespace StockMangementAPI.Controllers
             }
             return StatusCode(500, "An error occured while inserting");
         }
-		#endregion
-		#region Category Update
-		[HttpPut("{ID}")]
+        #endregion
+        #region Category Update
+        [HttpPut("{ID}")]
         public IActionResult Update(int ID, [FromBody] CategoryModel categoryModel)
         {
             if (categoryModel == null || ID != categoryModel.CategoryID)
@@ -77,6 +77,6 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-	}
+        #endregion
+    }
 }

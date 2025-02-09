@@ -17,7 +17,8 @@
         public string? CustomerName { get; set; }    
         public DateTime? Created { get; set; } // Creation timestamp
         public DateTime? Modified { get; set; }
-    }
+		public IFormFile? ImageFile { get; set; }
+	}
 	#endregion
 	#region Product DropDownModel
 	public class ProductDropDownModel

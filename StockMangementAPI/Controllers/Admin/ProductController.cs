@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
+using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -14,32 +14,32 @@ namespace StockMangementAPI.Controllers
         {
             _productRepository = productRepository;
         }
-		#region Product GetAll
-		[HttpGet]
+        #region Product GetAll
+        [HttpGet]
         public IActionResult GetAll()
         {
             var products = _productRepository.SelectAll();
             return Ok(products);
         }
-		#endregion
-		#region Category DropDown
-		[HttpGet]
+        #endregion
+        #region Category DropDown
+        [HttpGet]
         public IActionResult CategoryDropDown()
         {
             var category = _productRepository.CategoryDropDown();
             return Ok(category);
         }
-		#endregion
-		#region Customer DropDown
-		[HttpGet]
+        #endregion
+        #region Customer DropDown
+        [HttpGet]
         public IActionResult CustomerDropDown()
         {
             var user = _productRepository.CustomerDropDown();
             return Ok(user);
         }
-		#endregion
-		#region Product GetByID
-		[HttpGet("{ID}")]
+        #endregion
+        #region Product GetByID
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var products = _productRepository.SelectByID(ID);
@@ -49,9 +49,9 @@ namespace StockMangementAPI.Controllers
             }
             return Ok(products);
         }
-		#endregion
-		#region Product Delete
-		[HttpDelete("{ID}")]
+        #endregion
+        #region Product Delete
+        [HttpDelete("{ID}")]
         public IActionResult Delete(int ID)
         {
             var isDeleted = _productRepository.Delete(ID);
@@ -61,25 +61,50 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-		#region Product Insert
-		[HttpPost]
-        public IActionResult Insert([FromBody] ProductModel productModel)
+        #endregion
+        //#region Upload
+        //[HttpPost("UploadImage")]
+        //[Consumes("multipart/form-data")]
+        //public IActionResult UploadImage([FromForm] IFormFile imageFile)
+        //{
+        //	if (imageFile == null || imageFile.Length == 0)
+        //	{
+        //		return BadRequest("No image file uploaded.");
+        //	}
+
+        //	string imagePath = ImageHelper.SaveImageToFile(imageFile);
+        //	if (string.IsNullOrEmpty(imagePath))
+        //	{
+        //		return StatusCode(500, "Image upload failed.");
+        //	}
+
+        //	return Ok(imagePath);
+        //}
+
+        //#endregion
+        #region Product Insert
+        [HttpPost]
+        public IActionResult Insert([FromForm] ProductModel productModel)
         {
             if (productModel == null)
             {
                 return BadRequest();
             }
+            if (productModel.ImageFile != null)
+            {
+                productModel.ProductImage = ImageHelper.ConvertImageToBase64(productModel.ImageFile);
+            }
+
             bool isInserted = _productRepository.Insert(productModel);
             if (isInserted)
             {
-                return Ok(new { Message = "Product is inserted successfully" });
+                return Ok(new { Message = "Product inserted successfully!", Product = productModel });
             }
-            return StatusCode(500, "An error occured while inserting");
+            return StatusCode(500, "Error inserting product.");
         }
-		#endregion
-		#region Product Update
-		[HttpPut("{ID}")]
+        #endregion
+        #region Product Update
+        [HttpPut("{ID}")]
         public IActionResult Update(int ID, [FromBody] ProductModel productModel)
         {
             if (productModel == null || ID != productModel.ProductID)
@@ -93,6 +118,7 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-	}
+        #endregion
+
+    }
 }

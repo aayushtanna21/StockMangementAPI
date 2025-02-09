@@ -2,7 +2,7 @@
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class SuppliersRepository
     {

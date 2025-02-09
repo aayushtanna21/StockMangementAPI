@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
 using StockMangementAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using StockMangementAPI.Data.Admin;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    //[Authorize]
     public class BillDetailsController : ControllerBase
     {
         private readonly BillDetailsRepository _billdetailsRepository;
@@ -23,23 +25,25 @@ namespace StockMangementAPI.Controllers
             var billDetails = _billdetailsRepository.SelectAll();
             return Ok(billDetails);
         }
-		#endregion
-		#region BillDropDown
-		[HttpGet]
-        public IActionResult BillDropDown() { 
-            var bills=_billdetailsRepository.BillsDropDown();
+        #endregion
+        #region BillDropDown
+        [HttpGet]
+        public IActionResult BillDropDown()
+        {
+            var bills = _billdetailsRepository.BillsDropDown();
             return Ok(bills);
         }
-		#endregion
-		#region ProductDropDown
-		[HttpGet]
-        public IActionResult ProductDropDown() { 
-            var product= _billdetailsRepository.ProductDropDown();  
+        #endregion
+        #region ProductDropDown
+        [HttpGet]
+        public IActionResult ProductDropDown()
+        {
+            var product = _billdetailsRepository.ProductDropDown();
             return Ok(product);
         }
-		#endregion
-		#region  BilsDeatils GetByID
-		[HttpGet("{ID}")]
+        #endregion
+        #region  BilsDeatils GetByID
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var billDetails = _billdetailsRepository.SelectByID(ID);
@@ -49,9 +53,9 @@ namespace StockMangementAPI.Controllers
             }
             return Ok(billDetails);
         }
-		#endregion
-		#region BilsDeatils Delete
-		[HttpDelete("{ID}")]
+        #endregion
+        #region BilsDeatils Delete
+        [HttpDelete("{ID}")]
         public IActionResult Delete(int ID)
         {
             var isDeleted = _billdetailsRepository.Delete(ID);
@@ -61,9 +65,9 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-		#region BilsDeatils Insert
-		[HttpPost]
+        #endregion
+        #region BilsDeatils Insert
+        [HttpPost]
         public IActionResult Insert([FromBody] BillDetailsModel billDetailsModel)
         {
             if (billDetailsModel == null)
@@ -77,9 +81,9 @@ namespace StockMangementAPI.Controllers
             }
             return StatusCode(500, "An error occured while inserting");
         }
-		#endregion
-		#region BillsDetail Update
-		[HttpPut("{ID}")]
+        #endregion
+        #region BillsDetail Update
+        [HttpPut("{ID}")]
         public IActionResult Update(int ID, [FromBody] BillDetailsModel billDetailsModel)
         {
             if (billDetailsModel == null || ID != billDetailsModel.BillDetailID)
@@ -93,6 +97,6 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-	}
+        #endregion
+    }
 }

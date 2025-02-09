@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
+using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -14,24 +14,24 @@ namespace StockMangementAPI.Controllers
         {
             _customersRepository = customersRepository;
         }
-		#region Customers GetAll
-		[HttpGet]
+        #region Customers GetAll
+        [HttpGet]
         public IActionResult GetAll()
         {
             var customers = _customersRepository.SelectAll();
             return Ok(customers);
         }
-		#endregion
-		#region User DropDown
-		[HttpGet]
+        #endregion
+        #region User DropDown
+        [HttpGet]
         public IActionResult UserDropDown()
         {
-            var user=_customersRepository.UserDropDown();
+            var user = _customersRepository.UserDropDown();
             return Ok(user);
         }
-		#endregion
-		#region Customers GetByID
-		[HttpGet("{ID}")]
+        #endregion
+        #region Customers GetByID
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var customers = _customersRepository.SelectByID(ID);
@@ -41,8 +41,8 @@ namespace StockMangementAPI.Controllers
             }
             return Ok(customers);
         }
-		#endregion
-		#region Customers Delete		
+        #endregion
+        #region Customers Delete		
         [HttpDelete("{ID}")]
         public IActionResult Delete(int ID)
         {
@@ -53,9 +53,9 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-		#region Customers Insert
-		[HttpPost]
+        #endregion
+        #region Customers Insert
+        [HttpPost]
         public IActionResult Insert([FromBody] CustomersModel customersModel)
         {
             if (customersModel == null)
@@ -69,9 +69,9 @@ namespace StockMangementAPI.Controllers
             }
             return StatusCode(500, "An error occured while inserting");
         }
-		#endregion
-		#region Customers Update
-		[HttpPut("{ID}")]
+        #endregion
+        #region Customers Update
+        [HttpPut("{ID}")]
         public IActionResult Update(int ID, [FromBody] CustomersModel customersModel)
         {
             if (customersModel == null || ID != customersModel.CustomerID)
@@ -85,6 +85,6 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -2,7 +2,7 @@
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class PaymentsRepository
     {
@@ -40,9 +40,9 @@ namespace StockMangementAPI.Data
             }
             return payments;
         }
-		#endregion
-		#region BillsDropDown
-		public List<BillsDropDownModel> BillsDropDown()
+        #endregion
+        #region BillsDropDown
+        public List<BillsDropDownModel> BillsDropDown()
         {
             var bills = new List<BillsDropDownModel>();
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -64,9 +64,9 @@ namespace StockMangementAPI.Data
             }
             return bills;
         }
-		#endregion
-		#region SelectByID
-		public PaymentsModel SelectByID(int paymentID)
+        #endregion
+        #region SelectByID
+        public PaymentsModel SelectByID(int paymentID)
         {
             PaymentsModel payments = null;
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -84,7 +84,7 @@ namespace StockMangementAPI.Data
                     {
                         PaymentID = Convert.ToInt32(reader["PaymentID"]),
                         BillID = Convert.ToInt32(reader["BillID"]),
-                        BillDate= Convert.ToDateTime(reader["BillDate"]),
+                        BillDate = Convert.ToDateTime(reader["BillDate"]),
                         PaymentMode = reader["PaymentMode"].ToString(),
                         AmountPaid = Convert.ToDecimal(reader["AmountPaid"]),
                         PaymentDate = Convert.ToDateTime(reader["PaymentDate"]),
@@ -125,10 +125,10 @@ namespace StockMangementAPI.Data
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                 }
-                cmd.Parameters.AddWithValue("@PaymentID", paymentsModel.PaymentID); 
+                cmd.Parameters.AddWithValue("@PaymentID", paymentsModel.PaymentID);
                 cmd.Parameters.AddWithValue("@BillID", paymentsModel.BillID);
                 cmd.Parameters.AddWithValue("@PaymentMode", paymentsModel.PaymentMode);
-                cmd.Parameters.AddWithValue("@AmountPaid", paymentsModel.AmountPaid); 
+                cmd.Parameters.AddWithValue("@AmountPaid", paymentsModel.AmountPaid);
                 cmd.Parameters.Add("@Modified", SqlDbType.DateTime).Value = DBNull.Value;
                 conn.Open();
                 int rowsaffected = cmd.ExecuteNonQuery();

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class UserRepository
     {
@@ -45,7 +46,8 @@ namespace StockMangementAPI.Data
         public UserModel SelectByID(int userID)
         {
             UserModel user = null;
-            using (SqlConnection conn = new SqlConnection(_connectionstring)) {
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
                 SqlCommand cmd = new SqlCommand("PR_User_SelectAllByID", conn);
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -66,8 +68,8 @@ namespace StockMangementAPI.Data
                         Modified = Convert.ToDateTime(reader["Modified"])
                     };
                 }
-            } 
-            return user ;
+            }
+            return user;
         }
         #endregion
         #region Insert
@@ -86,7 +88,7 @@ namespace StockMangementAPI.Data
                 cmd.Parameters.AddWithValue("@Created", DateTime.Now); // Ensure @Created is provided
                 cmd.Parameters.AddWithValue("@Modified", DateTime.Now);
                 conn.Open();
-                int rowsaffected=cmd.ExecuteNonQuery();
+                int rowsaffected = cmd.ExecuteNonQuery();
                 return rowsaffected > 0;
             }
 
@@ -121,13 +123,45 @@ namespace StockMangementAPI.Data
             {
                 SqlCommand cmd = new SqlCommand("PR_User_Delete", conn);
                 {
-                    cmd.CommandType= CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.StoredProcedure;
                 };
                 cmd.Parameters.AddWithValue("UserID", userID);
                 conn.Open();
-                int rowaffected=cmd.ExecuteNonQuery();
+                int rowaffected = cmd.ExecuteNonQuery();
                 return rowaffected > 0;
             }
+        }
+        #endregion
+        #region Login
+        public UserModel Login(UserLoginModel user)
+        {
+            UserModel userData = null;
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
+                SqlCommand cmd = new SqlCommand("PR_User_Login", conn);
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                }
+                cmd.Parameters.AddWithValue("UserName", user.UserName);
+                cmd.Parameters.AddWithValue("Password", user.Password);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    userData = new UserModel
+                    {
+                        UserID = Convert.ToInt32(reader["UserID"]),
+                        UserName = reader["UserName"].ToString(),
+                        Password = reader["Password"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        PhoneNumber = reader["PhoneNumber"].ToString(),
+                        Created = Convert.ToDateTime(reader["Created"]),
+                        Modified = Convert.ToDateTime(reader["Modified"])
+                    };
+                }
+            }
+            return userData;
+
         }
         #endregion
 

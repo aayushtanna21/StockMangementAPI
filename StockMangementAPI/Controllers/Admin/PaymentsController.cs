@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
+using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -14,25 +14,25 @@ namespace StockMangementAPI.Controllers
         {
             _paymentsRepository = paymentsRepository;
         }
-		#region Payments GetAll
-		[HttpGet]
+        #region Payments GetAll
+        [HttpGet]
         public IActionResult GetAll()
         {
             var payments = _paymentsRepository.SelectAll();
             return Ok(payments);
         }
-		#endregion
-		#region Bills DropDown
-		[HttpGet]
+        #endregion
+        #region Bills DropDown
+        [HttpGet]
         public IActionResult BillsDropDown()
         {
             var bills = _paymentsRepository.BillsDropDown();
             return Ok(bills);
         }
-		#endregion
-		#region Payments GetByID
+        #endregion
+        #region Payments GetByID
 
-		[HttpGet("{ID}")]
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var payments = _paymentsRepository.SelectByID(ID);
@@ -42,9 +42,9 @@ namespace StockMangementAPI.Controllers
             }
             return Ok(payments);
         }
-		#endregion
-		#region Payments Delete
-		[HttpDelete("{ID}")]
+        #endregion
+        #region Payments Delete
+        [HttpDelete("{ID}")]
         public IActionResult Delete(int ID)
         {
             var isDeleted = _paymentsRepository.Delete(ID);
@@ -54,9 +54,9 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-		#region Payments Insert
-		[HttpPost]
+        #endregion
+        #region Payments Insert
+        [HttpPost]
         public IActionResult Insert([FromBody] PaymentsModel paymentsModel)
         {
             if (paymentsModel == null)
@@ -70,9 +70,9 @@ namespace StockMangementAPI.Controllers
             }
             return StatusCode(500, "An error occured while inserting");
         }
-		#endregion
-		#region Payments Update
-		[HttpPut("{ID}")]
+        #endregion
+        #region Payments Update
+        [HttpPut("{ID}")]
         public IActionResult Update(int ID, [FromBody] PaymentsModel paymentsModel)
         {
             if (paymentsModel == null || ID != paymentsModel.PaymentID)
@@ -86,6 +86,6 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-	}
+        #endregion
+    }
 }

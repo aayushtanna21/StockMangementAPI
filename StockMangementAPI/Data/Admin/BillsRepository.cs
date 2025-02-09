@@ -2,7 +2,7 @@
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class BillsRepository
     {
@@ -29,23 +29,23 @@ namespace StockMangementAPI.Data
                     {
                         BillID = Convert.ToInt32(reader["BillID"]),
                         CustomerID = Convert.ToInt32(reader["CustomerID"]),
-                        CustomerName = reader["CustomerName"].ToString(),                        
+                        CustomerName = reader["CustomerName"].ToString(),
                         TotalAmount = Convert.ToDecimal(reader["TotalAmount"]),
                         Discount = Convert.ToDecimal(reader["Discount"]),
                         PaymentMode = reader["PaymentMode"].ToString(),
                         BillDate = Convert.ToDateTime(reader["BillDate"]),
                         UserID = Convert.ToInt32(reader["UserID"]),
-						UserName = reader["UserName"].ToString(),
-						Modified = Convert.ToDateTime(reader["Modified"])
+                        UserName = reader["UserName"].ToString(),
+                        Modified = Convert.ToDateTime(reader["Modified"])
                     });
 
                 }
             }
             return bills;
         }
-		#endregion
-		#region CustomerDropDown
-		public List<CustomersDropDownModel> CustomerDropDown()
+        #endregion
+        #region CustomerDropDown
+        public List<CustomersDropDownModel> CustomerDropDown()
         {
             var customers = new List<CustomersDropDownModel>();
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -66,10 +66,10 @@ namespace StockMangementAPI.Data
                 }
             }
             return customers;
-            }
-		#endregion
-		#region UserDropDown
-		public List<UserDropDownModel> UserDropDown()
+        }
+        #endregion
+        #region UserDropDown
+        public List<UserDropDownModel> UserDropDown()
         {
             var user = new List<UserDropDownModel>();
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -90,11 +90,11 @@ namespace StockMangementAPI.Data
                 }
                 return user;
             }
-           
+
         }
-		#endregion
-		#region SelectByID
-		public BillsModel SelectByID(int billID)
+        #endregion
+        #region SelectByID
+        public BillsModel SelectByID(int billID)
         {
             BillsModel bills = null;
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -112,14 +112,14 @@ namespace StockMangementAPI.Data
                     {
                         BillID = Convert.ToInt32(reader["BillID"]),
                         CustomerID = Convert.ToInt32(reader["CustomerID"]),
-                        CustomerName= reader["CustomerName"].ToString(),
+                        CustomerName = reader["CustomerName"].ToString(),
                         TotalAmount = Convert.ToDecimal(reader["TotalAmount"]),
                         Discount = Convert.ToDecimal(reader["Discount"]),
                         PaymentMode = reader["PaymentMode"].ToString(),
                         BillDate = Convert.ToDateTime(reader["BillDate"]),
                         UserID = Convert.ToInt32(reader["UserID"]),
-						UserName = reader["UserName"].ToString(),
-						Modified = Convert.ToDateTime(reader["Modified"])
+                        UserName = reader["UserName"].ToString(),
+                        Modified = Convert.ToDateTime(reader["Modified"])
                     };
                 }
             }

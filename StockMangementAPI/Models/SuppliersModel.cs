@@ -13,5 +13,10 @@
         public DateTime? Created { get; set; } // Creation timestamp
         public DateTime? Modified { get; set; } // Last modification timestamp (nullable)
     }
-	#endregion
+    #endregion
+    public class SuppliersDropDownModel
+    {
+        public int SupplierID { get; set; }
+        public string SupplierName { get; set; }
+    }
 }

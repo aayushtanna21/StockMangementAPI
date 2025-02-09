@@ -1,46 +1,46 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
+using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class BillsController : ControllerBase
     {
         private readonly BillsRepository _billsRepository;
-		#region Bills Construtor
-		public BillsController(BillsRepository billsRepository)
+        #region Bills Construtor
+        public BillsController(BillsRepository billsRepository)
         {
             _billsRepository = billsRepository;
         }
-		#endregion
-		#region Bills GetAll
-		[HttpGet]
+        #endregion
+        #region Bills GetAll
+        [HttpGet]
         public IActionResult GetAll()
         {
             var bills = _billsRepository.SelectAll();
             return Ok(bills);
         }
-		#endregion
-		#region CustomerDropDown
-		[HttpGet]
+        #endregion
+        #region CustomerDropDown
+        [HttpGet]
         public IActionResult CustomerDropDown()
         {
             var customer = _billsRepository.CustomerDropDown();
             return Ok(customer);
         }
-		#endregion
-		#region User DropDown
-		[HttpGet]
+        #endregion
+        #region User DropDown
+        [HttpGet]
         public IActionResult UserDropDown()
         {
             var user = _billsRepository.UserDropDown();
             return Ok(user);
         }
-		#endregion
-		[HttpGet("{ID}")]
+        #endregion
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var bills = _billsRepository.SelectByID(ID);

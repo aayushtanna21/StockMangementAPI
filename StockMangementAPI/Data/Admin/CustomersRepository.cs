@@ -2,7 +2,7 @@
 using StockMangementAPI.Models;
 using System.Data;
 
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class CustomersRepository
     {
@@ -33,8 +33,8 @@ namespace StockMangementAPI.Data
                         Email = reader["Email"].ToString(),
                         Address = reader["Address"].ToString(),
                         UserID = Convert.ToInt32(reader["UserID"]),
-						UserName = reader["UserName"].ToString(),
-						Created = Convert.ToDateTime(reader["Created"]),
+                        UserName = reader["UserName"].ToString(),
+                        Created = Convert.ToDateTime(reader["Created"]),
                         Modified = Convert.ToDateTime(reader["Modified"])
                     });
 
@@ -65,11 +65,11 @@ namespace StockMangementAPI.Data
                 }
                 return user;
             }
-            
+
         }
-		#endregion
-		#region SelectByID
-		public CustomersModel SelectByID(int CustomerID)
+        #endregion
+        #region SelectByID
+        public CustomersModel SelectByID(int CustomerID)
         {
             CustomersModel customers = null;
             using (SqlConnection conn = new SqlConnection(_connectionstring))
@@ -91,8 +91,8 @@ namespace StockMangementAPI.Data
                         Email = reader["Email"].ToString(),
                         Address = reader["Address"].ToString(),
                         UserID = Convert.ToInt32(reader["UserID"]),
-						UserName = reader["UserName"].ToString(),
-						Created = Convert.ToDateTime(reader["Created"]),
+                        UserName = reader["UserName"].ToString(),
+                        Created = Convert.ToDateTime(reader["Created"]),
                         Modified = Convert.ToDateTime(reader["Modified"])
                     };
                 }
@@ -137,7 +137,7 @@ namespace StockMangementAPI.Data
                 cmd.Parameters.AddWithValue("@PhoneNumber", customersModel.PhoneNumber);
                 cmd.Parameters.AddWithValue("@Email", customersModel.Email);
                 cmd.Parameters.AddWithValue("@Address", customersModel.Address);
-                cmd.Parameters.AddWithValue("@UserID", customersModel.UserID); 
+                cmd.Parameters.AddWithValue("@UserID", customersModel.UserID);
                 cmd.Parameters.Add("@Modified", SqlDbType.DateTime).Value = DBNull.Value;
                 conn.Open();
                 int rowsaffected = cmd.ExecuteNonQuery();

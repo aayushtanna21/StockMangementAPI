@@ -2,7 +2,7 @@
 using Microsoft.Identity.Client;
 using StockMangementAPI.Models;
 using System.Data;
-namespace StockMangementAPI.Data
+namespace StockMangementAPI.Data.Admin
 {
     public class StockTransactionsRepository
     {
@@ -157,11 +157,12 @@ namespace StockMangementAPI.Data
                 }
                 return user;
             }
-           
+
         }
-		#endregion
-		#region ProductDropDown
-		public List<ProductDropDownModel> ProductDropDown() {
+        #endregion
+        #region ProductDropDown
+        public List<ProductDropDownModel> ProductDropDown()
+        {
             var products = new List<ProductDropDownModel>();
             using (SqlConnection conn = new SqlConnection(_connectionstring))
             {
@@ -181,7 +182,7 @@ namespace StockMangementAPI.Data
                 }
                 return products;
             }
-		}
-		#endregion
-	}
+        }
+        #endregion
+    }
 }

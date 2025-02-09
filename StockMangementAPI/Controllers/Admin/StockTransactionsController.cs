@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StockMangementAPI.Data;
+using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
 
-namespace StockMangementAPI.Controllers
+namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -14,32 +14,32 @@ namespace StockMangementAPI.Controllers
         {
             _stocktransactionsRepository = stocktransactionsRepository;
         }
-		#region StockTransactions GetAll
-		[HttpGet]
+        #region StockTransactions GetAll
+        [HttpGet]
         public IActionResult GetAll()
         {
             var stockTransactions = _stocktransactionsRepository.SelectAll();
             return Ok(stockTransactions);
         }
-		#endregion
-		#region Product DropDown
-		[HttpGet]
+        #endregion
+        #region Product DropDown
+        [HttpGet]
         public IActionResult ProductDropDown()
         {
             var stockTransactions = _stocktransactionsRepository.ProductDropDown();
             return Ok(stockTransactions);
         }
-		#endregion
-		#region User DropDown
-		[HttpGet]
-		public IActionResult UserDropDown()
-		{
-			var stockTransactions = _stocktransactionsRepository.UserDropDown();
-			return Ok(stockTransactions);
-		}
-		#endregion
-		#region StockTransactions GetByID
-		[HttpGet("{ID}")]
+        #endregion
+        #region User DropDown
+        [HttpGet]
+        public IActionResult UserDropDown()
+        {
+            var stockTransactions = _stocktransactionsRepository.UserDropDown();
+            return Ok(stockTransactions);
+        }
+        #endregion
+        #region StockTransactions GetByID
+        [HttpGet("{ID}")]
         public IActionResult GetByID(int ID)
         {
             var stockTransactions = _stocktransactionsRepository.SelectByID(ID);
@@ -49,9 +49,9 @@ namespace StockMangementAPI.Controllers
             }
             return Ok(stockTransactions);
         }
-		#endregion
-		#region StockTransactions Delete
-		[HttpDelete("{ID}")]
+        #endregion
+        #region StockTransactions Delete
+        [HttpDelete("{ID}")]
         public IActionResult Delete(int ID)
         {
             var isDeleted = _stocktransactionsRepository.Delete(ID);
@@ -61,10 +61,10 @@ namespace StockMangementAPI.Controllers
             }
             return NoContent();
         }
-		#endregion
-		#region StockTransactions Insert
+        #endregion
+        #region StockTransactions Insert
 
-		[HttpPost]
+        [HttpPost]
         public IActionResult Insert([FromBody] StockTransactionsModel stockTransactionsModel)
         {
             if (stockTransactionsModel == null)
@@ -78,9 +78,9 @@ namespace StockMangementAPI.Controllers
             }
             return StatusCode(500, "An error occured while inserting");
         }
-		#endregion
-		#region StockTransactions Update
-		[HttpPut("{ID}")]
+        #endregion
+        #region StockTransactions Update
+        [HttpPut("{ID}")]
         public IActionResult Update(int ID, [FromBody] StockTransactionsModel stockTransactionsModel)
         {
             if (stockTransactionsModel == null || ID != stockTransactionsModel.StockTransactionID)
@@ -92,9 +92,9 @@ namespace StockMangementAPI.Controllers
             {
                 return NotFound();
             }
-          
+
             return NoContent();
         }
-		#endregion
-	}
+        #endregion
+    }
 }
