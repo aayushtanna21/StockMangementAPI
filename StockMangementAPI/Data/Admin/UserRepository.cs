@@ -34,7 +34,8 @@ namespace StockMangementAPI.Data.Admin
                         Email = reader["Email"].ToString(),
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         Created = Convert.ToDateTime(reader["Created"]),
-                        Modified = Convert.ToDateTime(reader["Modified"])
+                        Modified = Convert.ToDateTime(reader["Modified"]),
+                        Role = reader["Role"].ToString()
                     });
 
                 }
@@ -65,7 +66,8 @@ namespace StockMangementAPI.Data.Admin
                         Email = reader["Email"].ToString(),
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         Created = Convert.ToDateTime(reader["Created"]),
-                        Modified = Convert.ToDateTime(reader["Modified"])
+                        Modified = Convert.ToDateTime(reader["Modified"]),
+                        Role = reader["Role"].ToString()
                     };
                 }
             }
@@ -87,6 +89,7 @@ namespace StockMangementAPI.Data.Admin
                 cmd.Parameters.AddWithValue("@PhoneNumber", userModel.PhoneNumber);
                 cmd.Parameters.AddWithValue("@Created", DateTime.Now); // Ensure @Created is provided
                 cmd.Parameters.AddWithValue("@Modified", DateTime.Now);
+                cmd.Parameters.AddWithValue("@Role", userModel.Role);
                 conn.Open();
                 int rowsaffected = cmd.ExecuteNonQuery();
                 return rowsaffected > 0;
@@ -94,8 +97,27 @@ namespace StockMangementAPI.Data.Admin
 
         }
         #endregion
+        #region Register
+        public bool Register(UserRegistrationModel userRegistrationModel)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionstring))
+            {
+                SqlCommand cmd = new SqlCommand("PR_User_Register", conn);
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                }
+                cmd.Parameters.AddWithValue("@UserName", userRegistrationModel.UserName);
+                cmd.Parameters.AddWithValue("@Password", userRegistrationModel.Password);
+                cmd.Parameters.AddWithValue("@Email", userRegistrationModel.Email);
+                cmd.Parameters.AddWithValue("@PhoneNumber", userRegistrationModel.PhoneNumber);
+                conn.Open();
+                int rowsaffected = cmd.ExecuteNonQuery();
+                return rowsaffected > 0;
+            }
+        }
+                #endregion
         #region Update
-        public bool Update(UserModel userModel)
+                public bool Update(UserModel userModel)
         {
             using (SqlConnection conn = new SqlConnection(_connectionstring))
             {
@@ -156,7 +178,8 @@ namespace StockMangementAPI.Data.Admin
                         Email = reader["Email"].ToString(),
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         Created = Convert.ToDateTime(reader["Created"]),
-                        Modified = Convert.ToDateTime(reader["Modified"])
+                        Modified = Convert.ToDateTime(reader["Modified"]),
+                        Role = reader["role"].ToString()
                     };
                 }
             }
@@ -164,6 +187,31 @@ namespace StockMangementAPI.Data.Admin
 
         }
         #endregion
+        public UserModel GetUserProfile(int UserID)
+        {
+            UserModel user = null;
+            SqlConnection connection = new SqlConnection(_connectionstring);
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "PR_USER_PROFILE";
+            command.Parameters.AddWithValue("@UserID", UserID);
+
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                user = new UserModel
+                {
+                    UserID = Convert.ToInt32(reader["UserID"]),
+                    UserName = Convert.ToString(reader["UserName"]),
+                    Email = Convert.ToString(reader["Email"]),
+                    Password = Convert.ToString(reader["Password"]),
+
+                };
+            }
+            return user;
+        }
 
     }
+
 }

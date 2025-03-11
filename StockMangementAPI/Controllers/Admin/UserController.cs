@@ -36,10 +36,12 @@ namespace StockMangementAPI.Controllers.Admin
                     new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ),
                     new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
 					//new Claim("UserID", userData.UserID.ToString()),
-					//new Claim("UserName", userData.UserName.ToString()),
-					//new Claim("Password", userData.Password.ToString()),
+					new Claim("UserName", userData.UserName.ToString()),
+                    new Claim("Role", userData.Role.ToString()),
 
-				};
+                    new Claim("Password", userData.Password.ToString()),
+
+                };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -120,6 +122,22 @@ namespace StockMangementAPI.Controllers.Admin
                 return NotFound();
             }
             return NoContent();
+        }
+        #endregion
+        #region User Register
+        [HttpPost]
+        public IActionResult Register([FromBody] UserRegistrationModel userRegistrationModel)
+        {
+            if (userRegistrationModel == null)
+            {
+                return BadRequest();
+            }
+            bool isInserted = _userRepository.Register(userRegistrationModel);
+            if (isInserted)
+            {
+                return Ok(new { Message = "User is register successfully" });
+            }
+            return StatusCode(500, "An error occured while registering");
         }
         #endregion
     }

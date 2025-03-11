@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
+using System.Data;
 
 namespace StockMangementAPI.Controllers.Admin
 {
@@ -10,9 +13,11 @@ namespace StockMangementAPI.Controllers.Admin
     public class ProductController : ControllerBase
     {
         private readonly ProductRepository _productRepository;
-        public ProductController(ProductRepository productRepository)
+        private readonly IConfiguration _configuration;
+        public ProductController(ProductRepository productRepository, IConfiguration configuration)
         {
             _productRepository = productRepository;
+            _configuration = configuration;
         }
         #region Product GetAll
         [HttpGet]
@@ -62,26 +67,7 @@ namespace StockMangementAPI.Controllers.Admin
             return NoContent();
         }
         #endregion
-        //#region Upload
-        //[HttpPost("UploadImage")]
-        //[Consumes("multipart/form-data")]
-        //public IActionResult UploadImage([FromForm] IFormFile imageFile)
-        //{
-        //	if (imageFile == null || imageFile.Length == 0)
-        //	{
-        //		return BadRequest("No image file uploaded.");
-        //	}
-
-        //	string imagePath = ImageHelper.SaveImageToFile(imageFile);
-        //	if (string.IsNullOrEmpty(imagePath))
-        //	{
-        //		return StatusCode(500, "Image upload failed.");
-        //	}
-
-        //	return Ok(imagePath);
-        //}
-
-        //#endregion
+       
         #region Product Insert
         [HttpPost]
         public IActionResult Insert([FromForm] ProductModel productModel)
@@ -92,8 +78,19 @@ namespace StockMangementAPI.Controllers.Admin
             }
             if (productModel.ImageFile != null)
             {
-                productModel.ProductImage = ImageHelper.ConvertImageToBase64(productModel.ImageFile);
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages");
+                Directory.CreateDirectory(uploadsFolder);
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(productModel.ImageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    productModel.ImageFile.CopyTo(fileStream);
+                }
+
+                productModel.ProductImage = "/ProductImages/" + uniqueFileName; // Return URL instead of Base64
             }
+
 
             bool isInserted = _productRepository.Insert(productModel);
             if (isInserted)
@@ -119,6 +116,50 @@ namespace StockMangementAPI.Controllers.Admin
             return NoContent();
         }
         #endregion
+        //#region Product Filter
+        //[HttpGet]
+        //public IActionResult GetProductFilter(string? categoryName = null, decimal? price = null, string? customerName = null)
+        //{
+        //    var products = _productRepository.GetFilteredProducts(categoryName, price, customerName);
+        //    return Ok(products);
+        //}
+
+        //#endregion
+        #region Price DropDown
+        [HttpGet]
+        public IActionResult PriceDropDown()
+        {
+            var prices = _productRepository.GetPriceDropDown();
+            return Ok(prices);
+        }
+        #endregion
+        [HttpGet]
+        public async Task<IActionResult> GetCategoryNames()
+        {
+            var categories = await _productRepository.GetCategoryNames();
+            return Ok(categories);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDistinctPrices()
+        {
+            var prices = await _productRepository.GetDistinctPrices();
+            return Ok(prices);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCustomerNames()
+        {
+            var customers = await _productRepository.GetCustomerNames();
+            return Ok(customers);
+        }
+
+        [HttpGet]
+        public IActionResult FilterProducts(int? categoryID, decimal? price, int? customerID, DateTime? createdDate)
+        {
+            var products = _productRepository.FilterProducts(categoryID, price, customerID, createdDate);
+            return Ok(products);
+        }
 
     }
 }

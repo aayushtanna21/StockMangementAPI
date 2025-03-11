@@ -8,5 +8,10 @@
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
     }
-	#endregion
+    #endregion
+    public class CategoryDropDownModel
+    {
+        public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
+    }
 }

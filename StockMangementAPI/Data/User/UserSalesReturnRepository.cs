@@ -82,7 +82,7 @@ namespace StockMangementAPI.Data.User
                 }
                 cmd.Parameters.AddWithValue("@ProductID", usersalesreturnModel.ProductID);
                 cmd.Parameters.AddWithValue("@Quantity", usersalesreturnModel.Quantity);
-                cmd.Parameters.AddWithValue("@SalesDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@SaleReturnDate", DateTime.Now);
                 cmd.Parameters.AddWithValue("@CustomerID", usersalesreturnModel.CustomerID);
                 conn.Open();
                 int rowsaffected = cmd.ExecuteNonQuery();

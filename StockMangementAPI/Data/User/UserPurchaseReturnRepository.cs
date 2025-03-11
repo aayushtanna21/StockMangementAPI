@@ -88,7 +88,7 @@ namespace StockMangementAPI.Data.User
                 cmd.Parameters.AddWithValue("@CustomerID", userpurchasereturnModel.CustomerID);
                 cmd.Parameters.AddWithValue("@SupplierID", userpurchasereturnModel.SupplierID);
                 cmd.Parameters.AddWithValue("@Quantity", userpurchasereturnModel.Quantity);
-                cmd.Parameters.AddWithValue("@PurchaseDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@PurchaseReturnDate", DateTime.Now);
                 conn.Open();
                 int rowsaffected = cmd.ExecuteNonQuery();
                 return rowsaffected > 0;
