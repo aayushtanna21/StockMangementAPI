@@ -8,7 +8,7 @@ namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class BillDetailsController : ControllerBase
     {
         private readonly BillDetailsRepository _billdetailsRepository;

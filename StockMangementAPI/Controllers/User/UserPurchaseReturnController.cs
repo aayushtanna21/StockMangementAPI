@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockMangementAPI.Data.User;
 using StockMangementAPI.Models;
@@ -7,6 +8,7 @@ namespace StockMangementAPI.Controllers.User
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class UserPurchaseReturnController : ControllerBase
     {
         private readonly UserPurchaseReturnRepository _userpurchasereturnrepository;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StockMangementAPI.Data.Admin;
@@ -35,12 +36,10 @@ namespace StockMangementAPI.Controllers.Admin
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"] ),
                     new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()),
-					//new Claim("UserID", userData.UserID.ToString()),
+					new Claim("UserID", userData.UserID.ToString()),
 					new Claim("UserName", userData.UserName.ToString()),
-                    new Claim("Role", userData.Role.ToString()),
-
+                    //new Claim("Role", userData.Role.ToString()),
                     new Claim("Password", userData.Password.ToString()),
-
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -139,6 +138,58 @@ namespace StockMangementAPI.Controllers.Admin
             }
             return StatusCode(500, "An error occured while registering");
         }
+        #endregion
+        #region Profile
+        [HttpGet]
+
+        //public IActionResult GetProfile()
+        //{
+        //    var identity = User.Identity as ClaimsIdentity;
+        //    if (identity == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+        //    var userIDClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+        //    if (userIDClaim == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+        //    int userid = int.Parse(userIDClaim.Value);
+
+        //    var user = _userRepository.GetUserProfile(userid);
+
+
+
+        //    return Ok(user);
+        //}
+        public IActionResult GetProfile()
+        {
+            var identity = User.Identity as ClaimsIdentity;
+            if (identity == null)
+            {
+                return Unauthorized();
+            }
+
+            var userIDClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIDClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            // Debugging: Print the value
+            Console.WriteLine($"User ID Claim Value: {userIDClaim.Value}");
+
+            // Try parsing safely
+            int userid;
+            if (!int.TryParse(userIDClaim.Value, out userid))
+            {
+                return BadRequest("Invalid User ID format.");
+            }
+
+            var user = _userRepository.GetUserProfile(userid);
+            return Ok(user);
+        }
+
         #endregion
     }
 }

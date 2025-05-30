@@ -34,8 +34,8 @@ namespace StockMangementAPI.Data.Admin
                         Email = reader["Email"].ToString(),
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         Created = Convert.ToDateTime(reader["Created"]),
-                        Modified = Convert.ToDateTime(reader["Modified"]),
-                        Role = reader["Role"].ToString()
+                        Modified = Convert.ToDateTime(reader["Modified"])
+                        //Role = reader["Role"].ToString()
                     });
 
                 }
@@ -66,8 +66,8 @@ namespace StockMangementAPI.Data.Admin
                         Email = reader["Email"].ToString(),
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         Created = Convert.ToDateTime(reader["Created"]),
-                        Modified = Convert.ToDateTime(reader["Modified"]),
-                        Role = reader["Role"].ToString()
+                        Modified = Convert.ToDateTime(reader["Modified"])
+                        //Role = reader["Role"].ToString()
                     };
                 }
             }
@@ -89,7 +89,7 @@ namespace StockMangementAPI.Data.Admin
                 cmd.Parameters.AddWithValue("@PhoneNumber", userModel.PhoneNumber);
                 cmd.Parameters.AddWithValue("@Created", DateTime.Now); // Ensure @Created is provided
                 cmd.Parameters.AddWithValue("@Modified", DateTime.Now);
-                cmd.Parameters.AddWithValue("@Role", userModel.Role);
+                //cmd.Parameters.AddWithValue("@Role", userModel.Role);
                 conn.Open();
                 int rowsaffected = cmd.ExecuteNonQuery();
                 return rowsaffected > 0;
@@ -178,8 +178,8 @@ namespace StockMangementAPI.Data.Admin
                         Email = reader["Email"].ToString(),
                         PhoneNumber = reader["PhoneNumber"].ToString(),
                         Created = Convert.ToDateTime(reader["Created"]),
-                        Modified = Convert.ToDateTime(reader["Modified"]),
-                        Role = reader["role"].ToString()
+                        Modified = Convert.ToDateTime(reader["Modified"])
+                        //Role = reader["role"].ToString()
                     };
                 }
             }
@@ -206,11 +206,15 @@ namespace StockMangementAPI.Data.Admin
                     UserName = Convert.ToString(reader["UserName"]),
                     Email = Convert.ToString(reader["Email"]),
                     Password = Convert.ToString(reader["Password"]),
+                    PhoneNumber = reader["PhoneNumber"].ToString(),
+                    Created = Convert.ToDateTime(reader["Created"]),
+                    Modified = Convert.ToDateTime(reader["Modified"])
 
                 };
             }
             return user;
         }
+       
 
     }
 

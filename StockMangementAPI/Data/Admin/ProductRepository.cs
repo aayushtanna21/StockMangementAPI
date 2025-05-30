@@ -161,8 +161,6 @@ namespace StockMangementAPI.Data.Admin
 
                     productModel.ProductImage = "/ProductImages/" + uniqueFileName; // Store path instead of Base64
                 }
-
-
                 cmd.Parameters.AddWithValue("@ProductName", productModel.ProductName);
                 cmd.Parameters.AddWithValue("@ProductImage", (object)productModel.ProductImage ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@CategoryID", productModel.CategoryID);
@@ -174,7 +172,6 @@ namespace StockMangementAPI.Data.Admin
                 cmd.Parameters.AddWithValue("@CustomerID", productModel.CustomerID);
                 cmd.Parameters.AddWithValue("@Created", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Modified", DateTime.Now);
-
                 conn.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
                 return rowsAffected > 0;

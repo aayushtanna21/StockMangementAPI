@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockMangementAPI.Data.Admin;
 using StockMangementAPI.Models;
@@ -7,6 +8,7 @@ namespace StockMangementAPI.Controllers.Admin
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class StockTransactionsController : ControllerBase
     {
         private readonly StockTransactionsRepository _stocktransactionsRepository;
